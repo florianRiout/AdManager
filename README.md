@@ -7,10 +7,10 @@ For most of this tutorial, you will need an apple developer account (full versio
 **File > Build settings :** Click on IOS and and switch platform (you should get a Unity logo next to IOS).
 On the same page, click on **player settings**. Most of the settings can be left as they are.
 Some interesting settings to look at :
-1. Resolution and presentation
-..* You can find the auto rotation settings if you want or not your app to be able to rotate.
-2. Other Settings
-..* Identification : This is where you will find (and can change) your bundle ID useful for the app store setup you can provide the ID of your team
+- Resolution and presentation
+⋅⋅* You can find the auto rotation settings if you want or not your app to be able to rotate.
+- Other Settings
+⋅⋅* Identification : This is where you will find (and can change) your bundle ID useful for the app store setup you can provide the ID of your team
 (probably personal team in our case) from our apple developer account
 
 ## Ad services : AdMob and UnityAds
