@@ -54,15 +54,18 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
     public void CloseReward()
     {
         rewardScreen.SetActive(false);
+        Advertisement.Banner.Show();
     }
 
     // Implement IUnityAdsListener interface methods:
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
         // Define conditional logic for each ad completion status:
-        if (showResult == ShowResult.Finished && placementId == myPlacementReward)
+        if (showResult == ShowResult.Finished)
         {
-            rewardScreen.SetActive(true);
+            Advertisement.Banner.Show();
+            if (placementId == myPlacementReward)
+                rewardScreen.SetActive(true);
         }
         else if (showResult == ShowResult.Skipped)
         {
