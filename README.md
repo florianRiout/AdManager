@@ -25,7 +25,10 @@ AdMob and UnityAds are straight forward and you can implement them with the docu
 ## Leaderboard
 With your apple developer account, you need to go to https://appstoreconnect.apple.com/ and login with your account,
  then go to **My Apps** and create an app for your bundle ID.
+
 Once you have your app in the app store connect, you can go in Features > Game Center and start creating your leaderboards and achievements.
+
 To show your Game Center in game, make sure to import the UnityEngine.SocialPlatforms ('using UnityEngine.SocialPlatforms;') and use 'Social.ShowAchievementsUI();'
+
 You also have to perform some modifications in XCode. In the **Unity-iPhone > Signing & Capabilities**, make sure your team is set up correctly. Then with
 the **+ Capability**, add a GameCenter capability.
