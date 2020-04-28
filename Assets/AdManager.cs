@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Advertisements;
-using UnityEngine.UI;
+using UnityEngine.SocialPlatforms;
+using UnityEngine.SocialPlatforms.GameCenter;
 
 public class AdManager : MonoBehaviour, IUnityAdsListener
 {
@@ -13,6 +15,14 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
     GameObject rewardScreen;
     int count = 0;
 
+    static ILeaderboard m_Leaderboard;
+    public int highScoreInt = 1000;
+
+    public string leaderboardName = "Test";
+    public string leaderboardID = "com.DefaultCompany.AdManager.test";
+
+    public string achievement1Name = "com.DefaultCompany.AdManager.achv1";
+
     // Initialize the Ads listener and service:
     void Start()
     {
@@ -23,6 +33,51 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         Advertisement.Banner.SetPosition(bannerPosition);
         Advertisement.Banner.Load(myPlacementBanner);
         Advertisement.Banner.Show();
+        Social.localUser.Authenticate(ProcessAuthentication);
+    }
+
+    private void ProcessAuthentication(bool success)
+    {
+        if (success)
+        {
+            Debug.Log("Authenticated, checking achievements");
+
+            // MAKE REQUEST TO GET LOADED ACHIEVEMENTS AND REGISTER A CALLBACK FOR PROCESSING THEM
+            Social.LoadAchievements(ProcessLoadedAchievements); // ProcessLoadedAchievements FUNCTION CAN BE FOUND BELOW
+
+            Social.LoadScores(leaderboardName, scores => {
+                if (scores.Length > 0)
+                {
+                    // SHOW THE SCORES RECEIVED
+                    Debug.Log("Received " + scores.Length + " scores");
+                    string myScores = "Leaderboard: \n";
+                    foreach (IScore score in scores)
+                        myScores += "\t" + score.userID + " " + score.formattedValue + " " + score.date + "\n";
+                    Debug.Log(myScores);
+                }
+                else
+                    Debug.Log("No scores have been loaded.");
+            });
+        }
+        else
+            Debug.Log("Failed to authenticate with Game Center.");
+    }
+
+    void ProcessLoadedAchievements(IAchievement[] achievements)
+    {
+        if (achievements.Length == 0)
+            Debug.Log("Error: no achievements found");
+        else
+            Debug.Log("Got " + achievements.Length + " achievements");
+
+        // You can also call into the functions like this
+        Social.ReportProgress("Achievement01", 100.0, result => {
+            if (result)
+                Debug.Log("Successfully reported achievement progress");
+            else
+                Debug.Log("Failed to report achievement");
+        });
+        //Social.ShowAchievementsUI();
     }
 
     public void CountInteraction()
@@ -65,7 +120,10 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         {
             Advertisement.Banner.Show();
             if (placementId == myPlacementReward)
+            {
                 rewardScreen.SetActive(true);
+                Social.ShowAchievementsUI();
+            }
         }
         else if (showResult == ShowResult.Skipped)
         {

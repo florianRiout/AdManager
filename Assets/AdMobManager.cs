@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
 
@@ -30,12 +28,6 @@ public class AdMobManager : MonoBehaviour
         RequestReward();
 
         bannerView.Show();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     // to destroy banner : bannerView.Destroy();
@@ -184,7 +176,7 @@ public class AdMobManager : MonoBehaviour
 
     public void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardedAdLoaded event received");
+        PlayVideoReward();
     }
 
     public void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
@@ -208,15 +200,10 @@ public class AdMobManager : MonoBehaviour
 
     public void HandleRewardedAdClosed(object sender, EventArgs args)
     {
-        MonoBehaviour.print("HandleRewardedAdClosed event received");
     }
 
     public void HandleUserEarnedReward(object sender, Reward args)
     {
-        string type = args.Type;
-        double amount = args.Amount;
-        MonoBehaviour.print(
-            "HandleRewardedAdRewarded event received for "
-                        + amount.ToString() + " " + type);
+        rewardScreen.SetActive(true);
     }
 }
